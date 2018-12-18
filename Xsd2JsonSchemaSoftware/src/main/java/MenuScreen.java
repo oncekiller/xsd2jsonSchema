@@ -123,6 +123,7 @@ public class MenuScreen extends JFrame{
 	    		}
 	          }
 	    });
+	    
 	    JButton addFileCodeListLocal = new JButton("Select a file");
 	    addFileCodeListLocal.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {        
@@ -142,9 +143,9 @@ public class MenuScreen extends JFrame{
 	    panCodeListLocal.add(textCodeListLocal);
 	    panCodeListLocal.add(addFileCodeListLocal);
 	    
-	    JButton validerBouton = new JButton("Validate");
+	    JButton validateBouton = new JButton("Validate");
 	    
-	    validerBouton.addActionListener(new ActionListener(){
+	    validateBouton.addActionListener(new ActionListener(){
 	      public void actionPerformed(ActionEvent arg0) { 
 	    	  if(fileNormeChoisi!= null && fileStandardCodeListChoisi != null && fileLocalCodeListChoisi != null ) {
 	    		  synchronized (SelectFilesPhase.lock) {
@@ -171,7 +172,7 @@ public class MenuScreen extends JFrame{
 	    content.add(panNorme);
 	    content.add(panCodeListStandard);
 	    content.add(panCodeListLocal);
-	    content.add(validerBouton);
+	    content.add(validateBouton);
 	    this.add(content);
 		this.setVisible(true);  
 		

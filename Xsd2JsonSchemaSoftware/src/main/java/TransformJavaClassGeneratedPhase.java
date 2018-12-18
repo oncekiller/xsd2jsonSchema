@@ -59,7 +59,7 @@ public class TransformJavaClassGeneratedPhase extends App{
 		    			newContentFileNormeClass+="@CodeList(\""+typeCodeList+"\")\r\n";
 		    		}
 		    	}
-		    	//Permet de verifier que les getters aient des noms coherent avec les noms des attributs modifie par la premiere librairie,
+		    	//Permet de verifier que les getters aient des noms coherent avec les noms des attributs modifié par la premiére librairie,
 		    	//Si c'est pas le cas modifie le getter
 		    	Pattern pattern = Pattern.compile("get.+\\s*\\(\\)\\s*\\{");
 			    Matcher matcher = pattern.matcher(lineFileNormeClass);

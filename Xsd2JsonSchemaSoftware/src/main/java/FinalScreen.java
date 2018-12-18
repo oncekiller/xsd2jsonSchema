@@ -54,11 +54,12 @@ public class FinalScreen extends JFrame{
 					public void actionPerformed(ActionEvent arg0) { 
 		    			try { 
 		    				Desktop.getDesktop().open(fichiersJsonRep[0]);
-		    				dispose();
+		    				dispose();   			
 		    			} catch (IOException e) {
 		    				// TODO Auto-generated catch block
 		    				e.printStackTrace();
 		    				new ErrorScreen(e.getMessage(), "Opening Json File");
+		    				
 		    			}
 		    			finally {
 		    				dispose();

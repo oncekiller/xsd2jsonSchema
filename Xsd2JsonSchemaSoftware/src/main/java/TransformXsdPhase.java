@@ -40,6 +40,7 @@ public class TransformXsdPhase extends App {
 		schemaNorme = schemaCol.read(new StreamSource(inputNorme)); 
 		//Schema xsd de la codeList Standard
 		schemaStandardCodeList = schemaCol.read(new StreamSource(inputStandardCodeList)); 
+		
 		try {
 			//Regroup la codeList local et standard
 			regroupCodeList();
@@ -47,6 +48,7 @@ public class TransformXsdPhase extends App {
 			System.out.println("Problem when trying to regroup StandardCodeList and LocalCodeList");
 			e.printStackTrace(System.out);
 		}
+		
 		inputRegroupedCodeList =  new FileInputStream(fileRegroupedCodeList);
 		//Schema xsd de la regroupedCodeList
 		schemaRegroupedCodeList = schemaCol.read(new StreamSource(inputRegroupedCodeList));
@@ -62,7 +64,10 @@ public class TransformXsdPhase extends App {
 			System.out.println("Problem when trying to regroup regroupedCodeList and norme");
 			e.printStackTrace(System.out);
 		}
+		
 	}
+	
+	
 	
 	//fonction qui regroupe les deux codeLists dans un même fichier
 	public static void regroupCodeList() throws IOException {
@@ -76,15 +81,18 @@ public class TransformXsdPhase extends App {
 		
 	    //Variable qui lit le fichier de la codeList Standard
 		BufferedReader readerfileCodeListStandard = new BufferedReader(new FileReader(fileCodeListStandard));
+		
 		//La variable line est un string qui va représenter tour a tour une ligne du fichier actuellemennt lue par la variable reader
 		//La variable previousline est un string qui va représenter la ligne à celle qu'est en train de lire le reader
 		//la variable contentRegroupedCodeList représente le texte du nouveau fichier xsd créer (regroupedCodeList) qui est initialisé
 	    String linefileCodeListStandard = "",previousLinefileCodeListStandard = "", 
 	    	   contentRegroupedCodeList = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n" + 
 	     		"<xsd:schema xmlns:ecl=\"urn:entsoe.eu:wgedi:codelists\" attributeFormDefault=\"unqualified\" elementFormDefault=\"qualified\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n";
+	    
 	    //On parcourt une a une les lignes de la standardCodeList et on récupére leurs valeurs sous forme de string avec la variable "ligne"
 	    while((linefileCodeListStandard = readerfileCodeListStandard.readLine()) != null){ 	
 	         linefileCodeListStandard = cleanPrefix(linefileCodeListStandard);
+	         
 	         //On regarde si la ligne possède un élement xs:union permettant de regrouper des éléments des deux codeLists
 	         if(findUnion(linefileCodeListStandard)) {
 	        	 	//On recupere le nom de l'élèment de la standardCodeList de cet union
@@ -246,6 +254,8 @@ public class TransformXsdPhase extends App {
 	
 	
 	
+	
+	
 	//fonction qui regroupe regroupedCodeList et la norme
 	public static void regroupRegroupedCodeListAndNorme() throws IOException {
 			
@@ -359,7 +369,16 @@ public class TransformXsdPhase extends App {
 		    		   +"</"+prefixTargetXsdPrimitifType+":restriction>\r\n"
 		    		   +"</"+prefixTargetXsdPrimitifType+":simpleType>\r\n"
 		    		   +"</"+prefixTargetXsdPrimitifType+":attribute>\r\n";   			
-		    	}		
+		    	}
+		    else {
+		    	line = line.replaceAll("/>",">")+"\r\n"
+			    		   +"<"+prefixTargetXsdPrimitifType+":simpleType>\r\n"
+			    		   +"<"+prefixTargetXsdPrimitifType+":restriction base=\""+prefixTargetXsdPrimitifType+":string\" value=\"^"+fixedValue+"$\">\r\n"
+			    		   +"<"+prefixTargetXsdPrimitifType+":pattern value=\"^"+fixedValue+"$\"/>\r\n"
+			    		   +"</"+prefixTargetXsdPrimitifType+":restriction>\r\n"
+			    		   +"</"+prefixTargetXsdPrimitifType+":simpleType>\r\n"
+			    		   +"</"+prefixTargetXsdPrimitifType+":attribute>\r\n";   	
+		    }
 		}catch (Exception e){
 			return line;
 		}

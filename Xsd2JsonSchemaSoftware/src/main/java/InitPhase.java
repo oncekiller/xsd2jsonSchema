@@ -36,7 +36,7 @@ public class InitPhase extends App{
 		//Ecrit le contenu du fichier pom dynamiquement
 		try {
 			FileWriter writer= new FileWriter(fileDestinationPom1);
-			writer.write(PomContent.content);
+			writer.write(PomXmlContent.content);
 			writer.flush();
 		    writer.close();
 		} catch (Exception e) {

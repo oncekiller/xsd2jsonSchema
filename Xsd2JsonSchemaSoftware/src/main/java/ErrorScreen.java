@@ -9,6 +9,7 @@ public class ErrorScreen extends JFrame{
 			App.waitingScreen.dispose();
 		}
 		JOptionPane.showMessageDialog(this,errorMessage,"Error "+errorTitle,JOptionPane.ERROR_MESSAGE);
+		System.exit(0);
 	}
 	
 }
