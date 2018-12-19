@@ -13,52 +13,60 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.ws.commons.schema.XmlSchema;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
-//Class qui permet de récuperer des informations des CodeList
-//Recupére l'ensemble des types du schema xml du fichier regroupedCodeList et les stock dans la liste "ListTypeCodeList"
-//Récupére l'ensemble des descriptions (Title, Definition) de toutes les enumerations presentes dans le fichier regroupedCodeList et les stock dans le tableau "descriptionCodeListTab"
+//Class qui permet de récuperer des informations des CODE listes
+//Récupére l'ensemble des types du schema Xsd du fichier regroupedCodeList.xsd et les stock dans la liste "ListTypeCodeList"
+//Récupére l'ensemble des valeurs et leurs descriptions (Title, Definition) associées de toutes les enumerations presentes dans le fichier regroupedCodeList.xsd et les stock dans le tableau "descriptionCodeListTab"
 public class GetCodeListInformationPhase extends App{
 	public static InputStream inputRegroupedCodeList;
 	public static XmlSchemaCollection schemaCol = new XmlSchemaCollection();
 	public static XmlSchema schemaRegroupedCodeList;
 	public static void run() throws IOException {
 		inputRegroupedCodeList =  new FileInputStream(fileRegroupedCodeList);
-		//Schema xsd de la regroupedCodeList
+		
+		//Schema xsd du fichier regroupedCodeList.xsd
 		schemaRegroupedCodeList = schemaCol.read(new StreamSource(inputRegroupedCodeList));
-		//trouve la valeur de prefixXmlPrimitifType dans le fichier regroupedCodeList
+		
+		//trouve la valeur de prefixXmlPrimitifType dans le fichier regroupedCodeList.xsd
 		String[] prefixNamespaceList  = schemaRegroupedCodeList.getNamespaceContext().getDeclaredPrefixes();
 		for(String prefixNamespace : prefixNamespaceList) { 
 			 if(schemaRegroupedCodeList.getNamespaceContext().getNamespaceURI(prefixNamespace).equals("http://www.w3.org/2001/XMLSchema")) {
 			 prefixTargetXsdPrimitifType = prefixNamespace;
 			 };
 		}
+		
 		getTypeCodeList();
 		addDescriptionToList();
 	}
 	
-	//Ajoute tous les types des codeLists à la liste ListTypeCodeList
+	//Ajoute tous les types des CODE listes à la liste ListTypeCodeList
 	public static void getTypeCodeList() {
 		ListTypeCodeList.clear();
-		//parcourt les clés de tous les types presents dans le schéma du fichier regroupedCodeList et en sort le nom du type correspondant
+		
+		//parcourt les clés de tous les types presents dans le schéma du fichier regroupedCodeList.xsd et en sort le nom du type correspondant
 		for(QName key : schemaRegroupedCodeList.getSchemaTypes().keySet()) {
 			ListTypeCodeList.add(schemaRegroupedCodeList.getSchemaTypes().get(key).getName());
 		}
 	}
 	
-	//Ajoute les descriptions de toutes les enumerations de tous les type de ListTypeCodeList au tableau "descriptionCodeListTab"
+	//Ajoute les valeurs et leurs description associée de toutes les énumerations de tous les type de ListTypeCodeList au tableau "descriptionCodeListTab"
 	public static void addDescriptionToList() throws IOException {
 		descriptionCodeListTab.clear();
+		
 		//Parcourt tous les noms des types de la liste ListTypeCodeList
 		for(String nameTypeCodeList : ListTypeCodeList) {
+			
 			//On lit le fichier regroupedCodeList.xsd ligne par ligne
 			BufferedReader readerFileRegroupedCodeList = new BufferedReader(new FileReader(fileRegroupedCodeList));
+			
 			//la variable valueEnum reprèsente la valeur de l'enumeration parcourue
 			//la variable DescriptionTitle correspond au "Title" indiqué en description de l'enumeration parcourue
 			//la variable DescriptionDefinition correspond a la "Definition" indiqué en description de l'enumeration parcourue
 			String lineFileRegroupedCodeList = "", descriptionTitle= "", descriptionDefinition= "",valueEnum="";
-	    	//subMap est un sous tableau de "descriptionCodeListTab" qui contiendra la valeur de valueEnum et une liste composée des valeurs de DescriptionTitle et de DescriptionDefinition correspondantes à valueEnum
+	    	
+			//subMap est un sous tableau de "descriptionCodeListTab" qui contiendra la valeur de valueEnum et une liste composée des valeurs de DescriptionTitle et de DescriptionDefinition correspondantes à valueEnum
 			HashMap<String,String[]>subMap= new HashMap<String,String[]>();
 	    	
-			//compteur check pour aider a savoir dans quel type de balise le reader est a chaque iteration de la boucle while
+			//compteur check pour aider à savoir dans quel type de balise le Reader est, à chaque itération de la boucle while
 			int check = -1;
 	    	while((lineFileRegroupedCodeList = readerFileRegroupedCodeList.readLine()) != null){
 	    		 	if(check!=-1 && lineFileRegroupedCodeList.contains("</"+prefixTargetXsdPrimitifType+":simpleType>")) {
@@ -67,12 +75,14 @@ public class GetCodeListInformationPhase extends App{
 	    		 	if(check==4) {
 	    		 		descriptionDefinition+=lineFileRegroupedCodeList;
 	    		 	}
-	    		 	//detecte une balise <Definition> et récupère une première valeur grossière de la definition correspondante
+	    		 	
+	    		 	//détecte une balise <Definition> et récupère une première valeur grossière de la definition correspondante
 			    	if(check==3 && lineFileRegroupedCodeList.contains("<Definition>")) {
 			    		descriptionDefinition+=lineFileRegroupedCodeList;
 			    		check=4;
 			    	}
-			    	//Affine les valeurs de descriptionTitle, descriptionDefinition, valueEnum pour ne recupérer le content que de l'intérieur des balises,
+			    	
+			    	//Affine les valeurs de descriptionTitle, descriptionDefinition, valueEnum pour ne recupérer le contenue que de l'intérieur des balises,
 			    	//Met en forme ces différents contenues  
 			    	if(check==4 && lineFileRegroupedCodeList.contains("</Definition>")) {
 			    		
@@ -122,7 +132,7 @@ public class GetCodeListInformationPhase extends App{
 			    		
 			    
 			    		
-			    		//Insére les valeurs dans subMap puis réinitialise les variable et le compteur pour la prochaine enumeration
+			    		//Insére les valeurs dans subMap, puis réinitialise les variables et le compteur pour la prochaine enumeration
 			    		String[] subDescription = {descriptionTitle,descriptionDefinition};
 			    		
 			    		    		
@@ -136,20 +146,21 @@ public class GetCodeListInformationPhase extends App{
 	    		 	if(check==2) {
 	    		 		descriptionTitle+=lineFileRegroupedCodeList;
 			    	}
-	    		 	//detecte une balise <Title> et récupère une première valeur grossière du titre correspondante
+	    		 	//Détecte une balise <Title> et récupère une première valeur grossière du titre correspondant
 	    		 	if(check==1 && lineFileRegroupedCodeList.contains("<Title>")) {
 	    		 		descriptionTitle+=lineFileRegroupedCodeList;
 			    		check=2;
 			    	}
+	    		 	//Détecte la fin de la balise <Title>
 	    		 	if(check==2 && lineFileRegroupedCodeList.contains("</Title>")) {
 			    		check=3;
 			    	}
-	    		 	//Detecte une enumeration du type parcouru et récupère une première valeur grossière de la value correspondante
+	    		 	//Détecte une enumeration du type parcouru et récupère une première valeur grossière de la value correspondante
 	    		 	if(check==0 && lineFileRegroupedCodeList.contains("<"+prefixTargetXsdPrimitifType+":enumeration value=\"")&& !lineFileRegroupedCodeList.contains("/>")) {
 	    		 		valueEnum+=lineFileRegroupedCodeList;
 			    		check=1;
 			    	}
-	    		 	//Detecte si on parcourt un simpleType avec un nom équivalent à nameTypeCodeList
+	    		 	//Détecte si on parcourt un simpleType avec un nom équivalent à nameTypeCodeList
 	    		 	if(check==-1 && lineFileRegroupedCodeList.contains("<"+prefixTargetXsdPrimitifType+":simpleType name=\""+nameTypeCodeList+"\">")) {
 			    		check=0;
 			    	}

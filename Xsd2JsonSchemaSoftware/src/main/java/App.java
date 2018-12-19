@@ -14,32 +14,51 @@ import org.apache.maven.shared.invoker.MavenInvocationException;
 //Classe principale de l'application
 public class App 
 {	
+	//String du path vers le dossier d'exécution de l'outil
 	public static String path=new File("").getAbsolutePath(); 
-	//file contenant la norme en Xsd toute seule
+	
+	//file contenant la norme Xsd toute seule
 	public static File fileNorme = new File(path+"\\resources/xsd/Norme.xsd");
-	 //file de la standardCodeList en xsd
+	
+	//file de la CODE liste Standard Xsd
 	public static File fileCodeListStandard = new File(path+"\\resources/xsd/StandardCodeList.xsd");
-    //file de la localCodeList en xsd
+    
+	//File de CODE liste locale en Xsd
 	public static File fileCodeListLocal = new File(path+"\\resources/xsd/LocalCodeList.xsd");
-	//file regroupant la standard codeList et la local codeList en Xsd
+	
+	//file regroupant le contenue de la CODE liste standard et de la CODE liste locale en Xsd
 	public static File fileRegroupedCodeList = new File(path+"\\resources/xsd/RegroupedCodeList.xsd");
-	//file regroupant la norme et les deux codeLists regroupées en Xsd 
+	
+	//file regroupant le contenue de la norme de la CODE liste standard et de la CODE liste locale en Xsd
 	public static File fileResultXsd = new File(path+"\\resources/xsd/ResultXsd.xsd");
+	
 	//Copie de fileResultXsd dans le dossier "src/main/xsd/"
     public static File fileResultXsdBis = new File(path+"\\src/main/xsd/ResultXsd.xsd");
-    //variables représentant le prefix de la targerNamespace et préfix des type primitifs xml du fichier xsd
+    
+    //variables représentant le préfixe de la targerNamespace du schéma Xsd et le préfixe des types primitifs xml du fichier Xsd
 	public static String prefixTargetNamespace="" , prefixTargetXsdPrimitifType="";
-	//Tableau contenant l'ensemble des descriptions des codeLists
+	
+	//Tableau contenant l'ensemble des descriptions des CODE listes
 	public static Map<String, HashMap<String, String[]>> descriptionCodeListTab = new HashMap<String, HashMap<String, String[]>>();
-	//Liste de tous les types des codeList
+	
+	//Liste de tous les types des CODE listes
 	public static  ArrayList<String>ListTypeCodeList = new ArrayList<String>();
-	//liste des class java générées qui ne sont pas des class des élément de la codeList mais de la norme
+	
+	//liste des classes JAVA générées qui ne sont pas des classes des éléments de la CODE liste mais du schéma de la norme
 	public static ArrayList<File> fileNormeClassList;
-	//nom de la class de l'élément root
+	
+	//nom de la classe représentant l'élément root du schéma Xsd
 	public static String nameRootClassJava;
+	
+	//Un élément de la classe WaitingScreen
 	public static WaitingScreen waitingScreen;
+	
+	//Un élément de la classe InitScreen
 	public static InitScreen initScreen;
+	
+	//Un élément de la classe FinalScreen
 	public static FinalScreen finalScreen;
+	
 	public static void main( String[] args ) throws IOException{	
 		
 		try {

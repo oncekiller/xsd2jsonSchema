@@ -9,7 +9,7 @@ import java.io.File;
 
 import javax.swing.*;
 
-//Class qui gére le tableau d'affichage de l'outil
+//Class qui gére le tableau d'affichage du menu de  l'outil
 public class MenuScreen extends JFrame{
 	private JLabel textNorme, textCodeListStandard, textCodeListLocal;
 	public File fileNormeChoisi,fileStandardCodeListChoisi,fileLocalCodeListChoisi;
@@ -24,6 +24,8 @@ public class MenuScreen extends JFrame{
 		final JPanel panCodeListStandard = new JPanel();
 		final JPanel panCodeListLocal = new JPanel();
 	    
+		
+		//Section de la norme Xsd
 		panNorme.setBackground(Color.white);
 	    panNorme.setPreferredSize(new Dimension(this.getWidth(), 80));
 	    panNorme.setBorder(BorderFactory.createTitledBorder(" CIM XSD norme")); 
@@ -64,6 +66,7 @@ public class MenuScreen extends JFrame{
 	    panNorme.add(addFileNorme);
 	    
 	    
+	    //Section de la CODE liste Standard
 	    panCodeListStandard.setBackground(Color.white);
 	    panCodeListStandard.setPreferredSize(new Dimension(this.getWidth(), 80));
 	    panCodeListStandard.setBorder(BorderFactory.createTitledBorder(" Standard CODE list")); 
@@ -103,6 +106,9 @@ public class MenuScreen extends JFrame{
 	    panCodeListStandard.add(textCodeListStandard);
 	    panCodeListStandard.add(addFileCodeListStandard);
 	    
+	    
+	    
+	    //Section de la CODE liste locale
 	    panCodeListLocal.setBackground(Color.white);
 	    panCodeListLocal.setPreferredSize(new Dimension(this.getWidth(), 80));
 	    panCodeListLocal.setBorder(BorderFactory.createTitledBorder(" Local CODE list")); 
@@ -123,7 +129,6 @@ public class MenuScreen extends JFrame{
 	    		}
 	          }
 	    });
-	    
 	    JButton addFileCodeListLocal = new JButton("Select a file");
 	    addFileCodeListLocal.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {        
@@ -143,6 +148,8 @@ public class MenuScreen extends JFrame{
 	    panCodeListLocal.add(textCodeListLocal);
 	    panCodeListLocal.add(addFileCodeListLocal);
 	    
+	    
+	    //Bouton "Validate"
 	    JButton validateBouton = new JButton("Validate");
 	    
 	    validateBouton.addActionListener(new ActionListener(){
@@ -162,7 +169,7 @@ public class MenuScreen extends JFrame{
 	      }
 	    });
 	    
-	    //Clode button
+	    //Close button
 	    this.addWindowListener(new java.awt.event.WindowAdapter() {
 	        @Override
 	        public void windowClosing(java.awt.event.WindowEvent windowEvent) {

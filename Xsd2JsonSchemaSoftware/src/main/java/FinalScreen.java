@@ -16,14 +16,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-//Screen Final
+//Class gérant l'écran final de l'IHM
 public class FinalScreen extends JFrame{
 	public static File[] fichiersJsonRep;
 	public FinalScreen() {
 		
 		//On regarde si le fichier final json de la norme a été créé sinon on affiche un message d'erreur
-		//Si le fichier existe on affiche un screnn de succès avec la localisation du fichier créé et un bouton "ok"
-		//Si on appuie sur le bouton "ok" le fichier s'ouvre automatiquement avec l'outil par default de l'ordinateur de l'utilisateur pour les fichiers json
+		//Si le fichier existe on affiche un screen de succès avec la localisation du fichier créé et un bouton "ok"
+		//Si on appuie sur le bouton "ok" le fichier s'ouvre automatiquement avec l'outil par default de l'ordinateur de l'utilisateur pour les fichiers .json
 		//Si l'utilisateur ne possède pas d'outil par default affiche un message d'erreur
 		File rep = new File(App.path+"\\resources/json");
 		fichiersJsonRep = rep.listFiles(new FilenameFilter(){

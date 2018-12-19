@@ -458,7 +458,7 @@ class JsonSchemaGenerator
           }
 
 
-          //CUSTOM Look for @XmlJavaTypeAdapter xs:ENTITY xs:ID xs:IDREF xs:NCName xs:NMTOKEN xs:normalizedString
+          //CUSTOM Look for @XmlJavaTypeAdapter xs:ENTITY xs:ID  xs:NCName xs:NMTOKEN xs:normalizedString
           Option(p.getAnnotation(classOf[XmlSchemaType])).map {
             adapter =>
             //xs:ENTITY
@@ -491,7 +491,7 @@ class JsonSchemaGenerator
           }
 
 
-          //Look for CodeList
+          //CUSTOM Look for CodeList
           Option(p.getAnnotation(classOf[CodeList])).map {
             codeList =>
               node.put("$ref","codeList/"+codeList.value()+".json#")
@@ -602,7 +602,7 @@ class JsonSchemaGenerator
       currentProperty.map {
         p =>
           
-           //CUSTOM Look for @XmlJavaTypeAdapter xs:ENTITY xs:ID xs:IDREF xs:NCName xs:NMTOKEN xs:normalizedString
+           //CUSTOM Look for @XmlJavaTypeAdapter xs:hexBinary
           Option(p.getAnnotation(classOf[XmlSchemaType])).map {
             adapter =>
             //xs:hexBinary
@@ -641,7 +641,7 @@ class JsonSchemaGenerator
       currentProperty.map {
         p =>
           
-           //Look for @Custom for xs:float xs:double
+           //CUSTOM Look for @Custom for xs:float xs:double
           Option(p.getAnnotation(classOf[Custom])).map {
             adapter =>
                //xs:float
@@ -656,7 +656,7 @@ class JsonSchemaGenerator
               }
           }
           
-          //Look for @Digist fos xs:fractionDigit xs:totalDigit
+          //CUSTOM Look for @Digist fos xs:fractionDigit xs:totalDigit
           Option(p.getAnnotation(classOf[Digits])).map {
             adapter =>
               if(adapter.fraction!=0){
@@ -737,12 +737,12 @@ class JsonSchemaGenerator
       currentProperty.map {
         p =>
           
-          //Look for @Digist fos xs:fractionDigit xs:totalDigit
+          //CUSTOM Look for @Digist for xs:totalDigit
           Option(p.getAnnotation(classOf[Digits])).map {
             adapter =>
               node.put("maximum",new BigInteger("9"*adapter.integer))     
           }
-          //Look for @Custom for xs:int xs:long
+          //CUSTOM Look for @Custom for xs:int xs:long
           Option(p.getAnnotation(classOf[Custom])).map {
             adapter =>
               //xs:int
@@ -796,7 +796,7 @@ class JsonSchemaGenerator
               }    
           }
 
-          //CUSTOM Look for @XmlJavaTypeAdapter xs:dateTime xs:date xs:time xs:negativeInteger xs:nonNegativeInteger xs:positiveInteger xs:nonPositiveInteger xs:unsignedLong xs:unsignedInt xs:unsignedShort xs:unsignedByte
+          //CUSTOM Look for @XmlJavaTypeAdapter xs:dateTime xs:date xs:time xs:gDay xs:gMonth xs:gYear xs:gMonthDay xs:gYearMonth xs:unsignedLong
           Option(p.getAnnotation(classOf[XmlSchemaType])).map {
             adapter =>
               

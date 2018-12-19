@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.kjetland.jackson.jsonSchema.JsonSchemaGenerator;
 
 
-//Class qui permet de générer les fichiers json de la norme et des CodeList
+//Class qui permet de générer les fichiers json SCHEMA de la norme et des CODE listes
 //Modifie également ces fichiers créés
 public class JavaClassToJsonSchemaPhase extends App{
 	public static String path=new File("").getAbsolutePath();
@@ -41,13 +41,13 @@ public class JavaClassToJsonSchemaPhase extends App{
         }
 		
 		
-		//On récupert le nom de la class de l'élément root
-		//Nom de l'élément root du schema xsd du fichier "resultXsd.xsd" 
+		//On récupert le nom de la class de l'élément root du schema Xsd du fichier "resultXsd.xsd" 
+		//On le sauvegarde dans la variable "nameElementRoot"
 		inputResultXsd = new FileInputStream(fileResultXsd);
 		schemaResultXsd = schemaCol.read(new StreamSource(inputResultXsd));
 		String nameElementRoot= schemaResultXsd.getElements().get(schemaResultXsd.getElements().keySet().toArray()[0]).getName();
 		 File rep = new File(path+"\\src/main/java/generated");
-	     //permet de creer une liste des fichiers java contenues dans le dossier src/main/java/generated
+	     //permet de creer une liste des fichiers java contenus dans le dossier src/main/java/generated
 	     File[] fichiersJavaRep = rep.listFiles(new FilenameFilter(){
 	       public boolean accept(File dir, String name) {
 	         return name.endsWith(".java");
@@ -62,7 +62,7 @@ public class JavaClassToJsonSchemaPhase extends App{
 	    			checkFindNameRootClass=1;
 	    		}
 		 }
-	     //Si on ne trouve pas le nom de la class root avec la méthode précedente on parcourt tous les fichier java créés un a un et on voit lequel est le root
+	     //Si on ne trouve pas le nom de la class root avec la méthode précedente on parcourt tous les fichiers java créés un a un, ligne par ligne et on voit lequel est le root
 	     //Celui qui possède l'annotation "@XmlRootElement"
 	     if(checkFindNameRootClass!=1) {
 	    	 for(File file : fichiersJavaRep) {
@@ -76,9 +76,9 @@ public class JavaClassToJsonSchemaPhase extends App{
 		     }    
 	     }
 	     
-	    //Creer le fichier jsonSchema de la norme
+	    //Creer le fichier json Schema de la norme
 		transformJavaClasstoJsonSchema(nameRootClassJava,true);
-		//Creer les fichier jsonSchema des codeList
+		//Creer les fichiers json Schema des CODE listes
 		for(String type : ListTypeCodeList) {
 			transformJavaClasstoJsonSchema(type,false);
 			addDescriptionToJSchemaCodeList(type);
@@ -89,8 +89,8 @@ public class JavaClassToJsonSchemaPhase extends App{
 	
 	
 	
-	//Permet la création des fichier json et de leurs contenus
-	//Prend un argument le nom d'une classe java et si elle appartient au élèments de la norme ou de la CodeList
+	//Permet la création des fichiers json SCHEMA et de leurs contenus
+	//Prend un argument le nom d'une class java, et si elle appartient au élèments de la norme ou de la CodeList
 	//Ressort le fichier json correspondant
 	public static void transformJavaClasstoJsonSchema(String javaClassName, Boolean norme ) throws IOException {
 		//Fichier Json final créé a partir des arguments de la fonction
@@ -102,6 +102,7 @@ public class JavaClassToJsonSchemaPhase extends App{
         //récupére la class Java avec le nom indiqué en attribut 
         Class<?> rootClassJava = null;
         JsonNode jsonSchema= null;
+        //Génére le schéma Json SCHEMA correspondant 
         try {
         rootClassJava = Class.forName("generated."+javaClassName.replace(".java", ""));
         jsonSchema = schemaGen.generateJsonSchema(rootClassJava);
@@ -113,13 +114,13 @@ public class JavaClassToJsonSchemaPhase extends App{
         
         //Créer le fichier .json au bon endroit dans le dossier
         //Dossier "resources/json/" pour la norme
-        //Dossier "resources/json/codeList" pour les codeList
+        //Dossier "resources/json/codeList" pour les CODE listes
         
         //Si le fichier créé est celui de la norme
         if(norme) {
         	fichierJsonFinal = new File(path+"\\resources/json/"+javaClassName.replace(".java", "")+".json");
         }
-        //Si le fichier créé est un élément de la CodeList
+        //Si le fichier créé est un élément des CODE listes
         else {
         	fichierJsonFinal = new File(path+"\\resources/json/codeList/"+javaClassName.replace(".java", "")+".json");
         }
@@ -131,12 +132,12 @@ public class JavaClassToJsonSchemaPhase extends App{
 	    writerFichierJsonFinal.close();
 	    
 	    
-	    // Pour le fichier json de la norme enlever les enumerations des CodeList qui ne servent a rien
+	    // Pour le fichier json de la norme, enléve les enumerations des CODE listes qui ne servent à rien
 	    if (norme) {
 	    	BufferedReader reader = new BufferedReader(new FileReader(fichierJsonFinal));
 	    	String line="" ,previousLine="", newContent="";
 	    	while((line = reader.readLine()) != null){
-	    		//Faire gaf si enum autres que codeList ca les efface
+	    	
 	    		if(line.contains("\"enum\" : [")) {
 	    			if(!line.endsWith(",")&& previousLine.contains("\"$ref\" : \"codeList")) {
 	    				newContent=newContent.substring(0,newContent.length()-3)+"\r\n";
@@ -157,12 +158,12 @@ public class JavaClassToJsonSchemaPhase extends App{
 	
 	
 	
-	//Fonction qui ajoute les descriptions du tableau de description "descriptionCodeListTab" aux fichiers Json des CodeLists
+	//Fonction qui ajoute les descriptions et valeurs d'énumération du tableau de description "descriptionCodeListTab" aux fichiers Json des CODE listes
 	public static void addDescriptionToJSchemaCodeList(String nameCodeList) throws IOException {
 		File fichierJson = new File(path+"\\resources/json/codeList/"+nameCodeList+".json");
-		//On recupert un tableau de toutes les descriptions
 		BufferedReader reader = new BufferedReader(new FileReader(fichierJson));
 		String line = "",oldtext="";
+		//Ajoute l'attribut "description" au fichier Json avec les valeurs du tableau correspondant au fichier parcourru
    	 	while((line = reader.readLine()) != null){
    	 		oldtext +=line+"\r\n";
    	 		if(line.contains("\"title\" :")) {

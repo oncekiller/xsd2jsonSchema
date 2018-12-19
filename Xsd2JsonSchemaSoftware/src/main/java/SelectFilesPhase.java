@@ -14,6 +14,7 @@ public class SelectFilesPhase extends App{
         fileCodeListStandard.createNewFile();
         fileCodeListLocal.createNewFile();
         
+        //Créer un écran de menu
         MenuScreen menuScreen = new MenuScreen();
        
         synchronized(lock) {
@@ -28,7 +29,7 @@ public class SelectFilesPhase extends App{
        }
         
         
-        //Copie le fichier norme choisie dans le fichier fileNorme ligne par ligne
+        //Copie le fichier norme Xsd choisi dans le fichier fileNorme ligne par ligne
         File fileNormeChoisi= menuScreen.fileNormeChoisi;
         BufferedReader readerNorme = new BufferedReader(new FileReader(fileNormeChoisi));
         String lineNorme = "",oldtextNorme="";
@@ -43,7 +44,7 @@ public class SelectFilesPhase extends App{
         
         
         
-        //Copie le fichier norme choisie dans le fichier fileCodeListStandard ligne par ligne
+        //Copie le fichier CODE liste Standard choisi dans le fichier fileCodeListStandard ligne par ligne
         File fileStandardCodeListChoisi= menuScreen.fileStandardCodeListChoisi;
         BufferedReader readerStandardCodeList = new BufferedReader(new FileReader(fileStandardCodeListChoisi));
         String lineStandardCodeList = "",oldtextStandardCodeList="";
@@ -67,7 +68,7 @@ public class SelectFilesPhase extends App{
         
         
         
-        //Copie le fichier norme choisie dans le fichier fileCodeListLocal ligne par ligne
+        //Copie le fichier CODE liste locale choisi dans le fichier fileCodeListLocal ligne par ligne
         File fileLocalCodeListChoisi= menuScreen.fileLocalCodeListChoisi;
         BufferedReader readerLocalCodeList = new BufferedReader(new FileReader(fileLocalCodeListChoisi));
         String lineLocalCodeList = "",oldtextLocalCodeList="";

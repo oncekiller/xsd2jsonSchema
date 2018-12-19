@@ -1,4 +1,4 @@
-//Content du fichier bat "CompilCreatedClass.bat" qui compil les class java générées et modififiées 
+//Content du fichier bat "CompilCreatedClass.bat" qui compile les class java générées et modififiées 
 public class CompilCreatedClassBatContent {
 	static String content= 
 			"javac -classpath Xsd2JsonSchemaSoftware-1.0.0-executable.jar; ./src/main/java/*.java\r\n" + 
